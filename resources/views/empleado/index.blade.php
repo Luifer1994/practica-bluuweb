@@ -27,7 +27,12 @@
                     <td><img src="{{ asset("storage/$item->foto") }}" alt="" width="80"></td>
                     <td>
                         <button class="btn-success btn-sm">Editar</button>
-                        <button class="btn-danger btn-sm">Eliminar</button>
+                        <form method="POST" action="{{ route("empleado.destroy", $item->id) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-danger btn-sm">Eliminar</bu>
+                        </form>
+
                     </td>
                 </tr>
             @endforeach

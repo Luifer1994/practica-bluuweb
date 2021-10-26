@@ -61,7 +61,7 @@ class EmpleadoController extends Controller
 
         $newEmpleado->save();
 
-        return  redirect()->route('empleado.index')->with('message', 'Registro exitoso');;
+        return  redirect()->route('empleado.index')->with('message', 'Registro exitoso');
 
         // obligas a que el orden de lo inputs (name) sea igual a la base de datos
         // $datosEmpleado = request()->except('_token');
@@ -113,6 +113,7 @@ class EmpleadoController extends Controller
      */
     public function destroy(Empleado $empleado)
     {
-        //
+        $empleado->delete();
+        return  redirect()->route('empleado.index')->with('message', 'Registro eliminado con exito');;
     }
 }
