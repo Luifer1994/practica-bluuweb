@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Empleado;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class EmpleadoController extends Controller
 {
@@ -57,17 +56,9 @@ class EmpleadoController extends Controller
         if($request->hasFile('foto')){
             $newEmpleado->foto = $request->file('foto')->store('uploads', 'public');
         }
-
-
         $newEmpleado->save();
-
+        //lo devolvemos al index y le mandamos un mensaje con el metodo with
         return  redirect()->route('empleado.index')->with('message', 'Registro exitoso');
-
-        // obligas a que el orden de lo inputs (name) sea igual a la base de datos
-        // $datosEmpleado = request()->except('_token');
-        // Empleado::insert($datosEmpleado);
-        // return $request;
-
 
     }
 
@@ -88,9 +79,10 @@ class EmpleadoController extends Controller
      * @param  \App\Models\Empleado  $empleado
      * @return \Illuminate\Http\Response
      */
-    public function edit(Empleado $empleado)
+    public function edit(Empleado $empleado)//se instancia el empleado directamente con el parametro enviado
     {
-        //
+        //retornamos la vista edit y le enviamos el pasamos por compact el empleado instanciado
+        return view("empleado.edit", compact('empleado'));
     }
 
     /**
@@ -102,7 +94,25 @@ class EmpleadoController extends Controller
      */
     public function update(Request $request, Empleado $empleado)
     {
-        //
+         //VALIDAMOS QUE LOS DATOS QUE LLEGAN DEL FORMULARIO NO ESTEN VACIOS
+         $request->validate([
+            'nombre' => 'required|string',
+            'apellido_paterno' => 'required|string',
+            'apellido_materno' => 'required|string',
+            'correo' => 'required|email|unique:empleados,correo,'.$empleado->id.',id' //validamos que sea unico exepto en el mismo empleado
+        ]);
+        //SI MANDAMOS UNA NUEVA IMAGEN BORRAMOS LA GUARDADA Y LE AGREGAMOS LA NUEVA
+        if ($request->foto) {
+            unlink(storage_path('app/public/'.$empleado->foto));
+            $empleado->foto = $request->file('foto')->store('uploads', 'public');
+        }
+        $empleado->nombre = $request->nombre;
+        $empleado->apellido_paterno = $request->apellido_paterno;
+        $empleado->apellido_materno = $request->apellido_materno;
+        $empleado->correo = $request->correo;
+        $empleado->update();
+        //lo devolvemos al index y le mandamos un mensaje con el metodo with
+        return  redirect()->route('empleado.index')->with('message', 'Registro actualizado con exito');
     }
 
     /**
@@ -111,9 +121,10 @@ class EmpleadoController extends Controller
      * @param  \App\Models\Empleado  $empleado
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Empleado $empleado)
+    public function destroy(Empleado $empleado)//se instancia el empleado directamente con el parametro enviado
     {
         $empleado->delete();
-        return  redirect()->route('empleado.index')->with('message', 'Registro eliminado con exito');;
+        //retornamos a la vista anterior y mandamos un mensaje
+        return  back()->with('message', 'Registro eliminado con exito');
     }
 }
