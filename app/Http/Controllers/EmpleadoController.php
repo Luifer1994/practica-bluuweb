@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Empleado;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 
 class EmpleadoController extends Controller
 {
@@ -14,7 +15,8 @@ class EmpleadoController extends Controller
      */
     public function index()
     {
-        // $datos['empleados']= Empleado::paginate(5);
+        //con esto le decimos a laravel que usaremos bootstrap para el diseño de la paginacion ya que laravel 8 usa por defecto taillwin
+        Paginator::useBootstrap();
 
         $empleados = Empleado::paginate(5);
 
