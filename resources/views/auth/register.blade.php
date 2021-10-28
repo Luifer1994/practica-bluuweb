@@ -24,9 +24,16 @@
                         <input id="password-confirm" type="password" class="form-control my-3" name="password_confirmation" placeholder="Confirmar contraseña">
                         @error('password')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-warning">
                                 Registar
                             </button>
+                        </div>
+                        <div class="d-grid gap-2 mt-2 text-center">
+                            <p>Ya tienes cuenta</p>
+                            <i class="fas fa-arrow-down"></i>
+                            <a href="{{ route("login") }}" type="submit" class="btn btn-primary">
+                                Inicia sesión
+                            </a>
                         </div>
                     </form>
                 </div>

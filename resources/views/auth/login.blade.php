@@ -27,6 +27,13 @@
                             </button>
                         </div>
                     </form>
+                    <div class="d-grid gap-2 mt-2 text-center">
+                        <p>Si no tienes una cuenta registrate</p>
+                        <i class="fas fa-arrow-down"></i>
+                        <a href="{{ route("register") }}" type="submit" class="btn btn-warning">
+                            Regístrarte aquí
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
